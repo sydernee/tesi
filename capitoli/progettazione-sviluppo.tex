@@ -1,0 +1,122 @@
+% !TEX encoding = UTF-8
+% !TEX TS-program = pdflatex
+% !TEX root = ../tesi.tex
+
+%**************************************************************
+\chapter{Progettazione e sviluppo}
+\label{cap:progettazione-sviluppo}
+%**************************************************************
+
+%\intro{TODO}\\
+
+%**************************************************************
+\section{Librerie}
+Fatta eccezione per lunr.js, le librerie scelte sono state proposte dal candidato; il vincolo principale era, per le librerie che avrebbero dovuto permettere la ricerca, di essere scritte in Javascript (preferibilmente eseguibili lato browser).
+Nella scelta delle librerie i dei linguaggi, si è tenuto conto dei seguenti criteri:
+\begin{itemize}
+    \item possibilità di essere eseguita via browser;
+    \item funzionalità disponibili;
+    \item dipendenze;
+    \item supporto e sviluppo;
+    \item disponibilità di documentazione.
+\end{itemize}
+
+\subsection{Lunr.js}
+%\begin{figure}
+%    \includegraphics[scale=0.15]{immagini/lunrjs-logo.jpg}
+%    \caption{Logo di Lunr.js}
+% \end{figure}
+lunr.js è una libreria semplice da utilizzare, ma comunque potente: permette di fornire la funzionalità ricerca senza aver necessariamente bisogno di servizi esterni. 
+È pensata per essere utilizzata con collezioni relativamente piccole: ciò nonostante, non trascura l'aspetto dell'efficienza (sia il costo computazionale delle operazione che lo spazio occupato in memoria). 
+Non ha dipendenze esterne e può essere eseguita sia da browser che all'interno di un server Node.js.
+
+\FloatBarrier
+
+\subsection{LALOLib}
+LALOLib (Linear ALgebra Online Library) è una libreria interamente scritta in Javascript: rende facile effettuare operazioni algebriche direttamente da browser. È eseguibile sia in modalità sincrona che asincrona. È sviluppata dal Laboratoire Lorrain de Recherche en Informatique et ses Applications come parte del progetto MLweb costituisce il core di LALOLab (un ambiente di calcolo scientifico online). È anche alla base di ML.js, una libreria in Javascript library per il machine learning. 
+LALOLib include funzioni per:
+\begin{itemize}
+    \item algebra lineare;
+    \item statistica;
+    \item ottimizzazione (con glpk.js);
+    \item machine learning (con ML.js).
+\end{itemize}
+
+La scelta della libreria è stata vincolata, a causa della scarsità di librerie di calcolo scientifico in Javascript che siano al contempo attivamente sviluppate e che supportino il calcolo della SVD (p.es. tensorflow.js\footnote{\url{https://github.com/tensorflow/tfjs/issues/110}} allo stato attuale non lo permette e sushi2\footnote{\url{https://github.com/mil-tokyo/sushi2}} non è più sviluppata da quasi 3 anni) 
+
+\subsection{NumPy}
+NumPy è una libreria open source per il linguaggio di programmazione Python, che aggiunge supporto a grandi matrici e array multidimensionali insieme a una vasta collezione di funzioni matematiche di alto livello per poter operare efficientemente su queste strutture dati. È stato creato nel 2005 da Travis Oliphant basandosi su Numeric di Jim Hugunin. È stato utilizzato come confronto delle performance della libreria LALOLib nel calcolo della decomposizione ai valori singolari della matrice termini-documenti normalizzata (necessario per l'analisi della semantica latente). In particolare, fa uso della routine \texttt{\_gesdd} della libreria LAPACK (scritta in Fortran) per il calcolo della SVD; è stata scelta questa libreria e non SciPy come termine di confronto in quanto entrambe non sfruttano la sparsità della matrice nel calcolo della SVD.
+
+\subsection{scikit-learn}
+Scikit-learn è una libreria open source di apprendimento automatico per il linguaggio di programmazione Python, progettata per operare con le librerie NumPy e SciPy: è stata scelta dal candidato per prendere familiarità inizialmente con il dominio (recupero dell'informazione).
+
+\subsection{OpenNLP}
+Apache OpenNLP è una libreria per l'elaborazione del linguaggio naturale facendo uso del machine learning.
+Supporta, per esempio, il riconoscimento del linguaggio, tokenization, POS tagging, chunking e molto altro. È stata utilizzata per il POS tagging, utilizzando un modello allenato da un altro tesista\footnote{Jiancheng Ye, laureando in Ingegneria Informatica presso l'Università degli Studi di Padova}.
+
+\subsection{Riepilogo}
+ Un riepilogo delle librerie utilizzate, per linguaggio e scopo.
+ \begin{center}
+    \begin{tabular}{p{0.15\linewidth}lp{0.5\linewidth}}
+        \toprule
+        Linguaggio & Libreria & Scopo \\
+        \midrule
+          Javascript (browser) & lunr.js & Libreria principale, usata per il recupero dell'informazione. Indicizza i documenti e permette la ricerca. \\
+           & LALOLib & Effettuare i calcoli matriciali necessari alla generazione del tesauro. \\
+           \addlinespace
+          NodeJS &  srt-to-json & Convertire i file delle trascrizioni in un JSON rappresentante il corpus dei documenti. \\
+                 &  thesaurus & Convertire il tesauro generico di LibreOffice in JSON, per permettere il suo utilizzo all'interno del progetto.\\
+        \addlinespace
+          Python & NumPy        & Confronto delle performance del calcolo della decomposizione ai valori singolari \\
+                 & scikit-learn & Studio del recupero dell'informazione.\\
+        \addlinespace
+          Java   & OpenNLP      & Taggare i termini in base alla parte del discorso. (per il tesauro generato manualmente)\\
+        \bottomrule
+    \end{tabular}
+        \captionof{table}[Riepilogo librerie]{Librerie utilizzate durante lo stage} 
+        \label{tab:librerieUsate}
+    \end{center}
+
+
+%*************************************************************
+\section{Tesauro manuale}
+Per la generazione di un tesauro manuale si è fatto uso del POS Tagger di OpenNLP: il modello italiano è basato su quello del dott. Andrea Ciapetti\footnote{https://github.com/aciapetti/opennlp-italian-models} ed era stato ulteriormente allenato da un altro tesista, fino a raggiungere dei risultati molto buoni nei test. Il POS Tagger ha permesso di ridurre notevolmente il numero di termini da considerare, limitato ai soli verbi e sostantivi.
+
+L'idea iniziale invece era stata quella di ordinare i termini per frequenza (sia presi singolarmente che aggregati per stem) e, dopo aver filtrato tramite stopword, cercare a mano possibili sinonimi: il numero di termini presenti presenti (1956), nonostante le stopword, si è rivelato comunque essere eccessivo. Questo approccio ha però permesso di evidenziare problematiche nella precision riguardanti i termini più frequenti; mentre ricercare i termini meno frequenti ha permesso di individuare meglio alcuni errori di trascrizione del video.
+
+Un approccio aggiuntivo (non di immediata applicazione) poteva essere un misto tra POS Tagger e IDF, limitando la ricerca quindi ai termini non uniformemente distribuiti nel corpus e ai soli verbi e sostantivi.
+
+%**************************************************************
+\section{Tesauro automaticamente generato}
+Il tesauro è stato generato in maniera automatica, calcolando le co-occorrenze dei termini.
+Per fare ciò:
+\begin{itemize}
+    \item si crea la matrice termini-documenti $A$;
+    \item si normalizza la matrice (nel caso specifico si è utilizzato TF-TDF);
+    \item si calcola la matrice delle similarità $C = AA^{T}$.
+\end{itemize}
+
+Il valore dell'elemento in posizione $C_{i,j}$ della matrice è il valore della similarità tra il termine \textit{i} e il termine \textit{j}.
+
+Si è dovuto quindi determinare una certa soglia oltre la quale i due termini \textit{i} e \textit{j} possono essere considerati simili: la scelta di tale soglia è stata puramente empirica.
+
+%**************************************************************
+\section{Latent Semantic Indexing}
+Latent Semantic Indexing (chiamata anche Latent Semantic Analysis) è una tecnica di elaborazione del linguaggio naturale che analizza le relazioni tra un insieme di documenti e di termini che sono contenuti producendo un insieme di concetti legati ai documenti e ai termini. (si veda §\ref{cap:latent-semantic-indexing})
+
+Ai fini del recupero dell'informazione, per semplicità di implementazione, si è deciso di utilizzare la matrice $A_k$: nel caso di un corpus grande questo costituirebbe un fattore limitante, ma si è visto che il collo di bottiglia, nella particolare applicazione completamente lato client, è dato invece dal calcolo della decomposizione.
+
+A livello pratico, quindi:
+\begin{itemize}
+    \item si crea la matrice termini-documenti $A$;
+    \item si normalizza la matrice (nel caso specifico si è utilizzato TF-TDF);
+    \item si decompone la matrice originale nelle matrici $U$, $S$, $V$ e si calcola $A_k$;
+    \item si aggiorna la rappresentazione dei documenti sostituendola con $A_k$;
+    \item si aggiorna l'indice inverso (considerando come presente solo i termini oltre una certa soglia).    
+\end{itemize}
+
+La scelta del rango(ovvero il numero di concetti) e della soglia oltre la quale considerare un termine è stata, ancora una volta, empirica.
+
+%**************************************************************
+\section{Documentazione}
+Per produrre la documentazione per lo sviluppatore, si è scelto di utilizzare il tool JSDoc, sia per la sua semplicità che per continuità con lunr.js, la libreria principalmente utilizzata. Data la semplicità di utilizzo, non c'è stata necessità di produrre della documentazione per l'utente.

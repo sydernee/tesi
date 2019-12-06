@@ -2,31 +2,102 @@
 %**************************************************************
 % Acronimi
 %**************************************************************
-\renewcommand{\acronymname}{Acronimi e abbreviazioni}
+%\renewcommand{\acronymname}{Acronimi e abbreviazioni}
 
-\newacronym[description={\glslink{apig}{Application Program Interface}}]
-    {api}{API}{Application Program Interface}
+%\newacronym[description={\glslink{httpg}{HyperText Transfer Protocol}}]
+%    {http}{HTTP}{HyperText Transfer Protocol}
 
-\newacronym[description={\glslink{umlg}{Unified Modeling Language}}]
-    {uml}{UML}{Unified Modeling Language}
+
+\newacronym{wsl}{WSL}{Windows Subsystem for Linux}
+\newacronym{ir}{IR}{Information Retrieval}
+\newacronym{lsi}{LSI}{Latent Semantic Indexing}
+\newacronym{svd}{SVD}{Singular Value Decomposition}
+\newacronym{edv}{EDV}{Eigenvalue Decomposition}
 
 %**************************************************************
 % Glossario
 %**************************************************************
+
 %\renewcommand{\glossaryname}{Glossario}
 
-\newglossaryentry{apig}
+%\newglossaryentry{dependency-injection}
+%{
+%    name=Dependency Injection,
+%    text=dependency injection,
+%    sort=Dependency Injection,
+%    description={\glsdisp{design-pattern}{Design pattern}\gloss\ architetturale della programmazione a oggetti in cui un oggetto fornisce le dipendenze a un altro oggetto. Una ``dipendenza'' può essere vista come un oggetto che può essere usato, come un servizio}
+%}
+
+\newglossaryentry{corpus}
 {
-    name=\glslink{api}{API},
-    text=Application Program Interface,
-    sort=api,
-    description={in informatica con il termine \emph{Application Programming Interface API} (ing. interfaccia di programmazione di un'applicazione) si indica ogni insieme di procedure disponibili al programmatore, di solito raggruppate a formare un set di strumenti specifici per l'espletamento di un determinato compito all'interno di un certo programma. La finalità è ottenere un'astrazione, di solito tra l'hardware e il programmatore o tra software a basso e quello ad alto livello semplificando così il lavoro di programmazione}
+    name=corpus,
+    text=corpus,
+    sort=corpus,
+    description={Raccolta di documenti, genericamente di un unico autore}
 }
 
-\newglossaryentry{umlg}
+\newglossaryentry{gold-standard}
 {
-    name=\glslink{uml}{UML},
-    text=UML,
-    sort=uml,
-    description={in ingegneria del software \emph{UML, Unified Modeling Language} (ing. linguaggio di modellazione unificato) è un linguaggio di modellazione e specifica basato sul paradigma object-oriented. L'\emph{UML} svolge un'importantissima funzione di ``lingua franca'' nella comunità della progettazione e programmazione a oggetti. Gran parte della letteratura di settore usa tale linguaggio per descrivere soluzioni analitiche e progettuali in modo sintetico e comprensibile a un vasto pubblico}
+    name=gold standard,
+    text=gold standard,
+    sort=gold standard,
+    description={Sinonimo di ground truth}
+}
+
+\newglossaryentry{autoencoder}
+{
+    name=autoencoder,
+    text=autoencoder,
+    sort=autoencoder,
+    description={Un autoencoder è un tipo di rete neurale in grado di apprendere in maniera non supervisionata}
+}
+
+
+\newglossaryentry{git}
+{
+    name=git,
+    text=git,
+    sort=git,
+    description={Git è un software di controllo versione distribuito distribuito con licenza libera}
+}
+
+
+\newglossaryentry{ensemble}
+{
+    name=ensemble,
+    text=ensemble,
+    sort=ensemble,
+    description={Una serie di metodi d'insieme che usano modelli multipli per ottenere una migliore prestazione predittiva rispetto ai modelli da cui è costituito}
+}
+
+\newglossaryentry{jsdoc}
+{
+    name=JSdoc,
+    text=JSdoc,
+    sort=JSdoc,
+    description={È un linguaggio di markup usato per annotare i sorgenti scritti in Javascript}
+}
+
+\newglossaryentry{Amazon-Mechanical-Turk}
+{
+    name=Amazon Mechanical Turk,
+    text=Amazon Mechanical Turk,
+    sort=Amazon Mechanical Turk,
+    description={È un servizio internet di crowdsourcing che permette terzi di coordinare l'uso di intelligenze umane per eseguire piccoli compiti che i computer, a oggi, non sono in grado di fare: tipicamente trascrizioni di brevi file auto, riassunti, brevi descrizioni}
+}
+
+\newglossaryentry{token}
+{
+    name=token,
+    text=token,
+    sort=token,
+    description={è un blocco di testo categorizzato, normalmente costituito da caratteri indivisibili chiamati lessemi}
+}
+
+\newglossaryentry{algoritmi-fonetici}
+{
+    name=algoritmi fonetici,
+    text=algoritmi fonetici,
+    sort=algoritmi fonetici,
+    description={Algoritmi che permettono l'indicizzazione delle parole in base alla loro pronuncia}
 }

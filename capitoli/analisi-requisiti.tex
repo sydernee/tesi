@@ -6,79 +6,68 @@
 \chapter{Analisi dei requisiti}
 \label{cap:analisi-requisiti}
 %**************************************************************
+%\intro{Breve introduzione al capitolo}\\
+\section{Migliorare la ricerca}
+Quando si cerca di recuperare una informazione dal corpus fornitomi dall'azienda, si presentano due problematiche principali:
+\begin{itemize}
+    \item il concetto che cerchiamo è presente nel testo trascritto, ma espresso in termini diversi (p.es. sinonimi, acronimi vs scritto per esteso);
+    \item il concetto che cerchiamo non è presente nel testo trascritto, ma lo era nel filmato originale (i.e. errori di trascrizione). 
+\end{itemize}
 
-\intro{Breve introduzione al capitolo}\\
+Capire se un concetto è presente o meno in un dato documento, avendo a disposizione solo la trascrizione, non è sempre evidente neanche per un classificatore umano: questo perché gli errori introdotti dal sistema di trascrizione rendono difficile, a volte impossibile, capire il senso delle frasi. Alcuni esempi degli errori di trascrizione presenti sono disponibili nel §\ref{cap:esempi-errori}.
 
-\section{Casi d'uso}
+\section{Requisiti}
+Di seguito viene riportata una lista completa di tutti i requisiti individuati all'inizio dell'attività di stage. Ad ogni requisito viene assegnato il codice identificativo univoco:
+R[Tipo][Numero]
+in cui ogni parte ha un significato preciso:
+\begin{itemize}
+    \item Numero: numero progressivo che segue una struttura gerarchica
+    \item Tipo: la tipologia di requisito che può essere di:
+    \begin{itemize}
+        \item F: funzionalità.
+        \item Q: qualità.
+        \item V: vincolo.
+    \end{itemize} 
+\end{itemize}
 
-Per lo studio dei casi di utilizzo del prodotto sono stati creati dei diagrammi.
-I diagrammi dei casi d'uso (in inglese \emph{Use Case Diagram}) sono diagrammi di tipo \gls{uml} dedicati alla descrizione delle funzioni o servizi offerti da un sistema, così come sono percepiti e utilizzati dagli attori che interagiscono col sistema stesso.
-Essendo il progetto finalizzato alla creazione di un tool per l'automazione di un processo, le interazioni da parte dell'utilizzatore devono essere ovviamente ridotte allo stretto necessario. Per questo motivo i diagrammi d'uso risultano semplici e in numero ridotto.
+Esempio: RQ2 indica il secondo requisito ed è un requisito di qualità.
 
-\begin{figure}[!h] 
-    \centering 
-    \includegraphics[width=0.9\columnwidth]{usecase/scenario-principale} 
-    \caption{Use Case - UC0: Scenario principale}
-\end{figure}
+\begin{longtable}{lp{.48\textwidth}p{.15\textwidth}}
+    \toprule
+        \thcell{Id Requisito} & \thcell{Descrizione} & \thcell{Fonte}\\
+        \midrule
+        \endfirsthead
+        % intestazione normale
+        \multicolumn{3}{l}{\footnotesize\itshape
+        Continua dalla pagina precedente} \\
+        \toprule
+        \thcell{Id Requisito} & \thcell{Descrizione} & \thcell{Fonte}\\
+        %\midrule
+        \endhead
+        % piede normale
+        %\midrule
+        \multicolumn{3}{r}{\footnotesize\itshape
+        Continua nella prossima pagina} \\
+        \endfoot
+        % piede finale
+    \bottomrule
+    \caption[Requisiti individuati]{Requisiti individuati}
+    %\multicolumn{3}{r}{\footnotesize\itshape Si conclude dalla pagina precedente} 
+    \\
+    \endlastfoot
+        RF1 & L'utente deve poter effettuare una ricerca all'interno del corpus & Azienda \\ \addlinespace
+        RF2 & Implementazione di una collezione di test per valutare il sistema di ricerca mediante calcolo della precision, recall e f-measure& Azienda \\ \addlinespace
+        RF3 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un tesauro generato manualmente & Azienda\\ \addlinespace
+        RF4 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un \gls{autoencoder} & Azienda\\ \addlinespace
+        RF5 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi l'analisi della semantica latente & Azienda\\ \addlinespace
+        RF6 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un autoencoder & Azienda\\ \addlinespace
+        RF7 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi di un \gls{ensemble} dei metodi (tesauro manuale, tesauro automatico, analisi della semantica latente e autoencoder) & Azienda\\ \addlinespace
+        RF8 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un tesauro generico (di LibreOffice) & Azienda\\ \addlinespace
+        RF9 & I risultati delle ricerche devono essere aggregati per ID continui, quindi ordinati in base allo score & Interno \\ \addlinespace
+        RF10 & Configurazione dello stemmer italiano & Azienda \\ \addlinespace
+        RV11 & Il prodotto deve essere eseguibile da browser (su Windows 10, browser Chrome $\geq$ 77.0.3865) & Interno \\ \addlinespace
+        RQ12 & Deve essere fornita documentazione in inglese del codice in formato \gls{jsdoc} & Azienda/Interno \\ \addlinespace
+%%%%%% end data
+\label{tabella:requisitiIndividuati}
+\end{longtable}
 
-\begin{usecase}{0}{Scenario principale}
-\usecaseactors{Sviluppatore applicativi}
-\usecasepre{Lo sviluppatore è entrato nel plug-in di simulazione all'interno dell'IDE}
-\usecasedesc{La finestra di simulazione mette a disposizione i comandi per configurare, registrare o eseguire un test}
-\usecasepost{Il sistema è pronto per permettere una nuova interazione}
-\label{uc:scenario-principale}
-\end{usecase}
-
-\section{Tracciamento dei requisiti}
-
-Da un'attenta analisi dei requisiti e degli use case effettuata sul progetto è stata stilata la tabella che traccia i requisiti in rapporto agli use case.\\
-Sono stati individuati diversi tipi di requisiti e si è quindi fatto utilizzo di un codice identificativo per distinguerli.\\
-Il codice dei requisiti è così strutturato R(F/Q/V)(N/D/O) dove:
-\begin{enumerate}
-	\item[R =] requisito
-    \item[F =] funzionale
-    \item[Q =] qualitativo
-    \item[V =] di vincolo
-    \item[N =] obbligatorio (necessario)
-    \item[D =] desiderabile
-    \item[Z =] opzionale
-\end{enumerate}
-Nelle tabelle \ref{tab:requisiti-funzionali}, \ref{tab:requisiti-qualitativi} e \ref{tab:requisiti-vincolo} sono riassunti i requisiti e il loro tracciamento con gli use case delineati in fase di analisi.
-
-\newpage
-
-\begin{table}%
-\caption{Tabella del tracciamento dei requisti funzionali}
-\label{tab:requisiti-funzionali}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RFN-1     & L'interfaccia permette di configurare il tipo di sonde del test & UC1 \\
-\hline
-\end{tabularx}
-\end{table}%
-
-\begin{table}%
-\caption{Tabella del tracciamento dei requisiti qualitativi}
-\label{tab:requisiti-qualitativi}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RQD-1    & Le prestazioni del simulatore hardware deve garantire la giusta esecuzione dei test e non la generazione di falsi negativi & - \\
-\hline
-\end{tabularx}
-\end{table}%
-
-\begin{table}%
-\caption{Tabella del tracciamento dei requisiti di vincolo}
-\label{tab:requisiti-vincolo}
-\begin{tabularx}{\textwidth}{lXl}
-\hline\hline
-\textbf{Requisito} & \textbf{Descrizione} & \textbf{Use Case}\\
-\hline
-RVO-1    & La libreria per l'esecuzione dei test automatici deve essere riutilizzabile & - \\
-\hline
-\end{tabularx}
-\end{table}%

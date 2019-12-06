@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR="./output"	# modificare per scegliere il nome della cartella di destinazione
-NAME="tesi"		# modificiare per scegliere il nome del file di origine (.tex)
+NAME="Nalesso_Andrea_tesi"		# modificiare per scegliere il nome del file di origine (.tex)
 
 if [ ! -d $DIR ];
   then
@@ -14,15 +14,15 @@ echo --------------------
 
 pdflatex -output-directory=$DIR $NAME
 biber $DIR/$NAME
-makeindex -s ./$NAME.ist -t ./$NAME.glg -o ./$NAME.gls ./$NAME.glo
-makeindex -s ./$NAME.ist -t ./$NAME.alg -o ./$NAME.acr ./$NAME.acn
+makeindex -s $DIR/$NAME.ist -t $DIR/$NAME.glg -o $DIR/$NAME.gls $DIR/$NAME.glo
+makeindex -s $DIR/$NAME.ist -t $DIR/$NAME.alg -o $DIR/$NAME.acr $DIR/$NAME.acn
 
 # Due volte because Latex
 
 pdflatex -output-directory=$DIR $NAME
 biber $DIR/$NAME
-makeindex -s ./$NAME.ist -t ./$NAME.glg -o ./$NAME.gls ./$NAME.glo
-makeindex -s ./$NAME.ist -t ./$NAME.alg -o ./$NAME.acr ./$NAME.acn
+makeindex -s $DIR/$NAME.ist -t $DIR/$NAME.glg -o $DIR/$NAME.gls $DIR/$NAME.glo
+makeindex -s $DIR/$NAME.ist -t $DIR/$NAME.alg -o $DIR/$NAME.acr $DIR/$NAME.acn
 
 echo -------------------------
 echo - Generazione Documento -
@@ -31,15 +31,27 @@ echo -------------------------
 pdflatex -output-directory=$DIR $NAME
 pdflatex -output-directory=$DIR $NAME
 
+echo ---------------------------
+echo - Aggiornamento Glossario -
+echo ---------------------------
+
+# makeindex -s Nalesso_Andrea_tesi.ist -t Nalesso_Andrea_tesi.glg -o Nalesso_Andrea_tesi.gls Nalesso_Andrea_tesi.glo
+# makeindex -s Nalesso_Andrea_tesi.ist -t Nalesso_Andrea_tesi.alg -o Nalesso_Andrea_tesi.acr Nalesso_Andrea_tesi.acn
+echo ---------------------------
+echo - Aggiornamento Acronimi -
+echo ---------------------------
+
+
+
 echo ---------------------------------
 echo - Pulisco e poi apro il file... -
 echo ---------------------------------
 
 rm $DIR/*.acn $DIR/*.aux $DIR/*.bbl $DIR/*.bcf $DIR/*.glo
 rm $DIR/*.ist $DIR/*.lof $DIR/*.lot $DIR/*.run.xml $DIR/*.toc
-# Per mantenere i log commentare la linea seguente
-rm $DIR/*.blg  $DIR/*.log
+## Per mantenere i log commentare la linea seguente
+#rm $DIR/*.blg  $DIR/*.log
 
-open $DIR/$NAME.pdf
+#open $DIR/$NAME.pdf
 
 echo ---------------------------- END -----------------------------

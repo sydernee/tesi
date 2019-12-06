@@ -7,14 +7,99 @@
 \label{cap:conclusioni}
 %**************************************************************
 
-%**************************************************************
-\section{Consuntivo finale}
+\section{Risultato ottenuto}
+\begin{longtable}{lp{.48\textwidth}p{.15\textwidth}}
+    \toprule
+        \thcell{Id Requisito} & \thcell{Descrizione} & \thcell{Raggiunto}\\
+        \midrule
+        \endfirsthead
+        % intestazione normale
+        \multicolumn{3}{l}{\footnotesize\itshape
+        Continua dalla pagina precedente} \\
+        \toprule
+        \thcell{Id Requisito} & \thcell{Descrizione} & \thcell{Raggiunto}\\
+        %\midrule
+        \endhead
+        % piede normale
+        %\midrule
+        \multicolumn{3}{r}{\footnotesize\itshape
+        Continua nella prossima pagina} \\
+        \endfoot
+        % piede finale
+    \bottomrule
+    \caption[Requisiti raggiunti]{Requisiti raggiunti}
+    %\multicolumn{3}{r}{\footnotesize\itshape Si conclude dalla pagina precedente} 
+    \\
+    \endlastfoot
+        RF1 & L'utente deve poter effettuare una ricerca all'interno del corpus & Sì \\ \addlinespace
+        RF2 & Implementazione di una collezione di test per valutare il sistema di ricerca mediante calcolo della precision, recall e f-measure& Sì \\ \addlinespace
+        RF3 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un tesauro generato manualmente & Sì\\ \addlinespace
+        RF4 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un autoencoder & Sì\\ \addlinespace
+        RF5 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi l'analisi della semantica latente & Sì\\ \addlinespace
+        RF6 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un autoencoder & No\\ \addlinespace
+        RF7 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi di un ensemble dei metodi (tesauro manuale, tesauro automatico, analisi della semantica latente e autoencoder) & No\\ \addlinespace
+        RF8 & Implementazione di una pagina di ricerca dei documenti all'interno del corpus che utilizzi un tesauro generico (di LibreOffice) & Sì\\ \addlinespace
+        RF9 & I risultati delle ricerche devono essere aggregati per ID continui, quindi ordinati in base allo score & Sì \\ \addlinespace
+        RF10 & Configurazione dello stemmer italiano & Sì \\ \addlinespace
+        RV11 & Il prodotto deve essere eseguibile da browser (su Windows 10, browser Chrome $\geq$ 77.0.3865) & Sì \\ \addlinespace
+        RQ12 & Deve essere fornita documentazione in inglese del codice in formato JSDoc & Sì \\ \addlinespace
+%%%%%% end data
+\label{tabella:requisitiCompletati}
+\end{longtable}
+Non sono riuscito a completare tutti gli obiettivi prefissati all'inizio dello stage,
+per le difficoltà emerse e già analizzate in §\ref{sec:problematiche}.
+Anche se fossi riuscito ad implementare anche i restanti obiettivi, questo probabilmente
+non avrebbe avuto un impatto nel miglioramento del recupero dell'informazione:
+come evidenziato anche dal mio tutor aziendale, il corpus era insufficiente
+per riuscire ad estrarre efficacemente delle informazioni che potessero essere utili 
+al fine del reperimento.
 
-%**************************************************************
-\section{Raggiungimento degli obiettivi}
+Si sarebbe potuto ottenere di più per esempio cercando di espandere il contesto
+invece che di estrarre l'informazione dal corpus: guardando in letteratura,
+infatti, si possono trovare esempi (anche se pochi) che utilizzano le reti di Markov
+e un contesto più ampio (Wikipedia in primis come fonte) su corpus piccoli. 
+Tale approccio però avrebbe richiesto uno sforzo sia dal punto di vista tecnologico (capire
+come riadattare la libreria usata per il recupero dell'informazione o cercarne 
+un'altra) che dal punto di vista di conoscenze mie (reti di Markov, in particolare),
+non compatibile con i tempi dello stage. 
 
-%**************************************************************
-\section{Conoscenze acquisite}
+Ritengo sia più quello sono riuscito a ricevere dallo stage che quello che sono riuscito a dare a dare all'azienda: posso dire di portarmi a casa conoscenze in più, mentre l'azienda se non altro ha avuto la conferma che l'approccio naive è quello che ripaga di più (ed eventualmente di indagare verso un approccio probabilistico e non algebrico).
 
-%**************************************************************
-\section{Valutazione personale}
+%*************************************************************
+\subsection{Conoscenze possedute e acquisite}
+All'inizio dello stage, non avevo praticamente mai utilizzato Javascript (purtroppo appena accennato nel corso di tecnologie web e un aspetto secondario nel progetto). Avevo comunque una conoscenza di base di Python per implementare qualche esercizio di competitive programming e del corso di algoritmi e strutture dati e mi ha comunque permesso di provare ad applicare i primi concetti di recupero dell'informazione (p.es. calcolo di tf-idf) e confrontare le prestazioni della soluzione in Javascript con quella in Python.
+
+Da questa esperienza ho imparato
+\begin{itemize}
+    \item il linguaggio di programmazione Javascript;
+    \item delle basi di Node.js;
+    \item i fondamenti del recupero dell'informazione;
+    \item a utilizzare una libreria di calcolo scientifico in Javascript (LALOLib).
+\end{itemize}
+
+Se sono riuscito a reperire in autonomia il materiale necessario (cercando sia tra libri che paper) è anche per l'esperienza fatta durante il corso di studi.
+
+
+%*************************************************************
+\subsection{Utilizzazione del prodotto}
+Il prodotto non era pensato per essere immediatamente utilizzabile, non interfacciandosi con quanto di esistente.
+Per quanto riguarda la ricerca che fa uso dell'analisi della semantica latente, non è immediatamente utilizzabile in quanto le prestazioni della libreria in Javascript erano insufficienti anche per un corpus di piccole dimensioni (circa 75 secondi per decomporre la matrice contro il mezzo secondo scarso di NumPy e i qualche manciata di centesimi di secondo con SciPy): purtroppo non ci sono alternative migliori in Javascript attualmente disponibili. 
+Questi calcoli potrebbero essere effettuati lato server, ma comunque rimane una soluzione troppo inefficiente: specialmente se consideriamo che la quantità di testo trascritto è comunque relativamente piccola e corrisponde a circa 4 ore di filmato.
+
+%*************************************************************
+\subsection{Valutazione degli strumenti principalmente utilizzati}
+\subsubsection{Javascript}
+Meno banale di quello che potrebbe sembrare all'inizio: giusto per citare due particolarità, l'ereditarietà prototipale e le immediately invoked function expression. A volte lascia un po' troppe libertà. Mi ha sorpreso non trovare, tra le funzionalità "già incluse" (ovvero senza usare librerie esterne), una coda di priorità.
+
+\subsubsection{lunr.js}
+Semplice da usare se si conosce Javascript, ben documentato e lo sviluppo è attivo. Mi ha sorpreso positivamente e di poterlo riutilizzare in futuro. Di negativo c'è che non è ancora compatibile con i moduli di ES6\footnote{\url{https://github.com/olivernn/lunr.js/issues/401}}. 
+
+\subsubsection{LALOLib}
+Facile da utilizzare, discreta la documentazione e molto buono il supporto: anche se non troppo efficiente, le alternative non abbondano (se si deve utilizzare Javascript).     
+%*************************************************************
+\subsection{Possibili estensioni del prodotto}
+Le estensioni possibili, più che nelle funzionalità, nell'approccio:
+\begin{itemize}
+    \item considerare come documenti non i singoli frammenti ma gruppi un po' più grandi di frammenti (bisogna però trovare il trade-off giusto tra numero di documenti e numero dimensione dei documenti singoli);
+    \item provare a migliorare espandendo il contesto(p.es. con Wikipedia, come già accennato all'inizio del capitolo).
+\end{itemize} 
