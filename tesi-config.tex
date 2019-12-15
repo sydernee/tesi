@@ -11,7 +11,7 @@
 \newcommand{\myTitle}{Ricerca testuale estesa su corpus di piccole dimensioni}
 
 % Tipo di tesi                   
-\newcommand{\myDegree}{Tesi di laurea triennale}
+\newcommand{\myDegree}{Tesi di laurea}
 
 % Università             
 \newcommand{\myUni}{Università degli Studi di Padova}
@@ -195,6 +195,11 @@
 
 %%formatta la cella dello header delle tabelle
 \newcommand{\thcell}[1]{\normalsize\textbf{#1}} 
+
+%numeri cerchiati
+\definecolor{rossounipd}{RGB}{155,0,20}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,fill=rossounipd,inner sep=3pt] (char) {\textcolor{white}{#1}};}}
 
 
 %**************************************************************

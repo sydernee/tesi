@@ -7,6 +7,7 @@
 \label{cap:introduzione}
 %**************************************************************
 \section{Il progetto}
+\label{sec:progetto}
 Zucchetti è un’azienda italiana che produce soluzioni software, hardware e servizi
 per aziende, banche, assicurazioni, professionisti e associazioni di categoria. 
 La sede principale è a Lodi, ma è ben radicata nel territorio nazionale e ha sedi sparse in tutto il mondo;
@@ -21,11 +22,15 @@ Con questi numeri è evidente che la formazione giochi un ruolo importante: a ta
 Zucchetti organizza corsi e dispone di un ampio catalogo di video formativi, di cui viene automaticamente 
 estratta ed indicizzata la trascrizione dell’audio, per permettere un recupero puntuale dei filmati.
 
+Il \gls{corpus}\glsfirstoccur{} è costituito alla trascrizione dell’audio di 5 di videolezioni sui prodotti dell'azienda, per un totale di circa 4 ore di filmato; i documenti di cui è composto il
+\gls{corpus} sono 610 e corrispondono a frammenti audio di durata variabile (equivalenti a
+poche righe di testo).
+
 Il progetto di stage nasce dalla necessità di cercare di migliorare il recupero delle informazioni 
 dal \gls{corpus}: una informazione che non si riesce a reperire è una informazione persa.
 
 Lo stage ha comportato quindi lo studio di metodi per migliorare la precisione e il recupero delle informazioni
-all’interno del corpus generato: era infatti evidente, da precedenti prove fatte in azienda, che il corpus
+all’interno del \gls{corpus} generato: era infatti evidente, da precedenti prove fatte in azienda, che il \gls{corpus}
 a disposizione non fosse sufficiente per permettere l’applicazione di 
 metodi basati sul deeplearning come in particolare word2vec e le reti neurali associate e da qui la necessità di provare soluzioni alternative.
 
@@ -50,6 +55,7 @@ un totale di 320 ore.
 %\noindent Esempio di citazione nel pie' di pagina \\
 %citazione\footcite{womak:lean-thinking} \\
 
+
 %**************************************************************
 \section{Strumenti utilizzati}
 Come ambiente di lavoro, ho utilizzato il PC fornitomi dall'azienda e
@@ -67,19 +73,45 @@ ampia libertà.
         \item il code formatter Prettier ha mantenuto il mio codice sempre ben formattato e quindi più leggibile.
     \end{itemize}
     
-    \item[\gls{git}] per il versionamento del codice.
+    \item[\gls{git}\glsfirstoccur{}] per il versionamento del codice.
 \end{description}
+
+Per quanto riguarda le tecnologie, quelle principali sono:
+
+\begin{description}
+    \item[Javascript] il prodotto è stato scritto utilizzando il linguaggio di programmazione Javascript.
+    \item[lunr.js] è un libreria che permette di effettuare ricerche, scritta completamente in
+Javascript e senza dipendenze esterne. Ha permesso di indicizzare i documenti(§\ref{sec:indicizzazione}), filtrare alcuni termini irrilevanti al fine delle ricerche(§\ref{sec:stopword}), configurare
+uno stemmer(§\ref{sub:stemvslemma}),effettuare le ricerche sull’indice creato e quindi ritornare i documenti recuperati in base al loro score(§\ref{sec:ranking}).
+\item[LALOLib] è una libreria di calcolo scientifico, scritta in Javascript. Ha permesso di
+effettuare i calcoli necessari sulla matrice termini-documenti(§\ref{subsec:termDocumentMatrix}): in particolare questo è stato necessario nella generazione del tesauro automaticamente
+generato(§\ref{sec:comeGenerareTesauroAuto}) e per l’analisi della semantica latente(§\ref{cap:latent-semantic-indexing}
+e §\ref{comeLSI}).
+\item[\gls{jsdoc}\glsfirstoccur{}] è il linguaggio di markup utilizzato per annotare i file del prodotto, da cui poi
+è stato possibile generare automaticamente la documentazione.
+\end{description}
+
 
 %**************************************************************
 \section{Prodotto ottenuto}
-\begin{center}
-    \begin{figure}
-        \includegraphics[scale=0.55]{immagini/ricerca.png}
-        \caption{Esempio implementazione della ricerca}
-     \end{figure}
-\end{center}
-
-È possibile effettuare una ricerca all'interno del corpus utilizzando un tesauro (manuale, generico o automaticamente generato) e l'analisi della semantica latente. È stato configurato uno stemmer italiano, basato sullo stemmer Snowball.
+Il prodotto consente di effettuare una ricerca all’interno del \gls{corpus} testuale fornito
+dall’azienda(maggiori informazioni sul \gls{corpus} in §\ref{sec:progetto}). È eseguito interamente lato
+browser. Al fine di migliorarne la ricerca, è stato utilizzato:
+\begin{itemize}
+    \item un tesauro creato manualmente;
+    \item un tesauro generico;
+    \item un tesauro automaticamente generato;
+    \item analisi della semantica latente.
+\end{itemize}
+È configurato con:
+\begin{itemize}
+    \item una lista di stop word;
+    \item stemmer italiano\footnote{\url{https://github.com/MihaiValentin/lunr-languages}} basato sullo stemmer Snowball\footnote{\url{http://snowball.tartarus.org/}}.
+\end{itemize} 
+Per effettuare la ricerca, i documenti contenuti nel \gls{corpus} sono aggiunti in un indice:
+se con l’approccio basato su tesauro si espandono le interrogazioni, in quello sull’analisi
+della semantica latente si altera l’indice. I risultati delle ricerche sono aggregati in base
+all’ID dei video, come spiegato in \ref{sec:descrizioneProdotto}.
 
 %**************************************************************
 \section{Le principali problematiche}
@@ -88,7 +120,7 @@ Le principali difficoltà del progetto sono state derivanti da tre fattori:
 \begin{enumerate}
     \item Difficoltà nel muovere i primi passi con la libreria lunr.js. Causa di questo problema è stata principalmente una limitata conoscenza da parte mia del linguaggio di programmazione Javascript: tale problema è stato risolto grazie allo studio individuale del linguaggio.
     \item Difficoltà nel stabilire quali documenti fossero pertinenti o meno rispetto a una ricerca. Questo problema deriva dagli errori introdotti dalla trascrizione automatica, rendendo inizialmente impossibile realizzare la ground truth richiesta. Il problema è stato superato una volta avuto accesso ai filmati e non solo alle trascrizioni.
-    \item Difficoltà intrinseca del problema: riuscire ad ottenere dei buoni risultati con un corpus piccolo è intrinsecamente difficile: alcune strade possibili con un corpus grande non lo sono con uno piccolo (non solo i metodi basati sul deeplearning) e gli errori introdotti dalla trascrizione incidono molto di più di quanto non farebbero con un corpus grande. 
+    \item Difficoltà intrinseca del problema: riuscire ad ottenere dei buoni risultati con un \gls{corpus} piccolo è intrinsecamente difficile: alcune strade possibili con un \gls{corpus} grande non lo sono con uno piccolo (non solo i metodi basati sul deeplearning) e gli errori introdotti dalla trascrizione incidono molto di più di quanto non farebbero con un \gls{corpus} grande. 
     \item Nessuna conoscenza pregressa del dominio. Prima dello stage, non ne sapevo nulla di recupero dell'informazione e alcuni argomenti all'inizio si sono rivelati essere un po' ostici: questo è stato risolto grazie allo studio individuale e l'aiuto da parte del mio tutor aziendale. 
 \end{enumerate}
 
@@ -96,13 +128,13 @@ Le principali difficoltà del progetto sono state derivanti da tre fattori:
 \section{Organizzazione del testo}
 
 \begin{description}
-    \item[{\hyperref[cap:analisi-requisiti]{Il secondo capitolo}}] descrive brevemente qual è il problema che bisognava affrontare ed elenca i requisiti individuati.
+    \item[{\hyperref[cap:analisi-requisiti]{Il secondo capitolo}}] descrive brevemente qual è il problema che bisognava affrontare, il prodotto realizzato ed elenca i requisiti individuati..
     
-    \item[{\hyperref[cap:recupero-informazione]{Il terzo capitolo}}] introduce i concetti essenziali riguardanti il recupero dell'informazione.
+    \item[{\hyperref[cap:recupero-informazione]{Il terzo capitolo}}] introduce i concetti essenziali riguardanti il recupero dell’informazione.
     
-    \item[{\hyperref[cap:latent-semantic-indexing]{Il quarto capitolo}}] descrive gli obiettivi dell'analisi della semantica latente, introduce le basi teoriche e accenna a come sono utilizzabili nel recupero dell'informazione.
+    \item[{\hyperref[cap:latent-semantic-indexing]{Il quarto capitolo}}] descrive gli obiettivi dell’analisi della semantica latente, introduce le basi teoriche e accenna a come sono utilizzabili nel recupero dell’informazione.
     
-    \item[{\hyperref[cap:progettazione-sviluppo]{Il quinto capitolo}}] approfondisce le tecnologie e le scelte fatte nel progetto.
+    \item[{\hyperref[cap:progettazione-sviluppo]{Il quinto capitolo}}] approfondisce come si è affrontato il problema, le tecnologie e le scelte fatte nel progetto.
     
     \item[{\hyperref[cap:testing]{Il sesto capitolo}}] presenta le metriche, come doveva essere costruita la collezione di test e i loro risultati. 
     
@@ -111,7 +143,8 @@ Le principali difficoltà del progetto sono state derivanti da tre fattori:
 
 Riguardo la stesura del testo, relativamente al documento sono state adottate le seguenti convenzioni tipografiche:
 \begin{itemize}
-	\item gli acronimi, le abbreviazioni e i termini ambigui o di uso non comune menzionati vengono definiti nel glossario, situato alla fine del presente documento;
-	\item per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: \emph{parola}\glsfirstoccur;
-	\item i termini in lingua straniera o facenti parti del gergo tecnico sono evidenziati con il carattere \emph{corsivo}.
+	\item gli acronimi, le abbreviazioni e i termini ambigui o di uso non comune menzionati
+    vengono definiti rispettivamente in "Acronimi e abbreviazioni" e nel glossario,
+    situati alla fine del presente documento;
+	\item per la prima occorrenza dei termini riportati nel glossario viene utilizzata la seguente nomenclatura: \emph{parola}\glsfirstoccur{}.
 \end{itemize}

@@ -1,5 +1,7 @@
 \chapter{Latent Semantic Indexing}
 \label{cap:latent-semantic-indexing}
+\intro{Il capitolo descrive gli obiettivi dell'analisi della semantica latente, introduce le basi teoriche e accenna a come sono utilizzabili nel recupero dell'informazione.}\\
+
 Prendiamo come esempio la seguente matrice termini-documenti:
 \begin{equation*}
     \mathbf{A}=
@@ -74,6 +76,13 @@ trovare $A'$ di rango $k$ tale che la differenza tra $A'$ e $A$ sia la più picc
 \end{equation*}
 
 \section{Calcolare A'}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.45]{immagini/SVD.png}
+  \caption{Decomposizione ai valori singolari}
+  \label{fig:calcoloSVD}
+\end{figure}   
+
 \begin{theorem}
 Data una matrice A qualsiasi di dimensione $m x n$ e rango $k$, esistono $U$, $S$, $V$ tali che $A = U \cdot S \cdot V$ , dove:
 \begin{itemize}
